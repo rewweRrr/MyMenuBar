@@ -1,0 +1,9 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:ml="urn:import:ru.netcracker.client.list">
+    <g:FlowPanel>
+        <ml:MyList ui:field="list">
+
+        </ml:MyList>
+    </g:FlowPanel>
+</ui:UiBinder>
