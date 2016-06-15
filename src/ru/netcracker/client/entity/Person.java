@@ -1,21 +1,26 @@
-package ru.netcracker.client.pojo;
+package ru.netcracker.client.entity;
 
 /**
  * Created by rewweRrr on 04.04.2016
  */
 public class Person {
 
-    private int id;
+    private String id;
     private String name;
 
     public Person() {
     }
 
-    public int getId() {
+    public Person(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

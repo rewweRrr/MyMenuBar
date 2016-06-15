@@ -1,9 +1,14 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:ml="urn:import:ru.netcracker.client.list">
+             xmlns:l="urn:import:ru.netcracker.client.list.gwt"
+             xmlns:jsl="urn:import:ru.netcracker.client.list.js">
     <g:FlowPanel>
-        <ml:MyList ui:field="list">
+        <l:MyListImpl ui:field="list">
 
-        </ml:MyList>
+        </l:MyListImpl>
+        <jsl:MyListJsImpl ui:field="jsList">
+
+        </jsl:MyListJsImpl>
+
     </g:FlowPanel>
 </ui:UiBinder>

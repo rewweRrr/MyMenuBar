@@ -1,33 +1,33 @@
 package ru.netcracker.client.list;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import ru.netcracker.client.pojo.Person;
+import com.google.gwt.user.client.EventListener;
+import ru.netcracker.client.entity.Person;
+import ru.netcracker.client.list.providers.ItemProvider;
+
+import java.util.List;
 
 /**
- * Created by rewweRrr on 05.04.2016
+ * Created by nivo0616 on 06.06.2016
  */
-public class MyList extends Composite {
-    interface MyListUiBinder extends UiBinder<HTMLPanel, MyList> {
-    }
+public interface MyList {
 
-    private static MyListUiBinder ourUiBinder = GWT.create(MyListUiBinder.class);
+    void add(Person prn);
 
-    @UiField
-    Element ul;
+    void add(String name);
 
-    public MyList() {
-        initWidget(ourUiBinder.createAndBindUi(this));
-    }
+    Person get(String id);
 
-    public void addLi(Person prn) {
-        Element li = DOM.createElement("li");
-        li.setInnerText(prn.getId() + ") "+prn.getName());
-        DOM.appendChild(ul, li);
-    }
+    Element getEl(String id);
+
+    void remove(String id);
+
+    void clear();
+
+    void replaceAll(List<Person> people);
+
+    void addClickHandler(String id, EventListener eventListener);
+
+    void setProvider(ItemProvider provider);
+
 }
