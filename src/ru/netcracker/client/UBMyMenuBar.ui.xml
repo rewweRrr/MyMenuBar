@@ -2,13 +2,13 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:l="urn:import:ru.netcracker.client.list.gwt"
              xmlns:jsl="urn:import:ru.netcracker.client.list.js">
+
     <g:FlowPanel>
-        <l:MyListImpl ui:field="list">
+        <g:ListBox ui:field="listsBox"/>
 
-        </l:MyListImpl>
-        <jsl:MyListJsImpl ui:field="jsList">
+        <l:MyListImpl ui:field="list"/>
 
-        </jsl:MyListJsImpl>
+        <jsl:MyListJsImpl ui:field="jsList"/>
 
     </g:FlowPanel>
 </ui:UiBinder>

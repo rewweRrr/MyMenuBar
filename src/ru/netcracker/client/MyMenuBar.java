@@ -29,7 +29,7 @@ public class MyMenuBar implements EntryPoint {
         list.add("Pasha");
         list.add("Cath");
 
-        list.remove("2");
+        //list.remove("2");
 
         list.add("Gala");
 
@@ -65,24 +65,24 @@ public class MyMenuBar implements EntryPoint {
             }
         });
 
-        list.getProvider().get(new ItemCallBack<List<Person>>() {
-            public void onFailure(Throwable caught) {
-
-            }
-
-            public void onSuccess(List<Person> result) {
-                Window.alert("Suceess " + result.get(0).getId());
-            }
-        });
+//        list.getProvider().get(new ItemCallBack<List<Person>>() {
+//            public void onFailure(Throwable caught) {
+//
+//            }
+//
+//            public void onSuccess(List<Person> result) {
+//                Window.alert("Suceess " + result.get(0).getId());
+//            }
+//        });
 
         MyListJsImpl jsList = menuBar.getJsList();
 
         jsList.add(new Person("1", "Nick"));
         jsList.add("Cath");
         jsList.add("Pasha");
-        jsList.clear();
+        //jsList.clear();
         jsList.add("Nick");
-        jsList.replaceAll(people);
+        //jsList.replaceAll(people);
 //        Window.alert(jsList.get("ui-id-3").getName());
 //        jsList.addClickHandler("ui-id-3", new EventListener() {
 //            public void onBrowserEvent(Event event) {

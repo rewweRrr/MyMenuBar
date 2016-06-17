@@ -24,7 +24,6 @@ public class MyListImpl extends Composite implements MyList {
 
     private static MyListUiBinder ourUiBinder = GWT.create(MyListUiBinder.class);
 
-    private int id;
 
     private ItemProvider provider;
 
@@ -32,26 +31,24 @@ public class MyListImpl extends Composite implements MyList {
     Element ul;
 
     public MyListImpl() {
-        id = 0;
         initWidget(ourUiBinder.createAndBindUi(this));
     }
 
 
-    private int generateId() {
-        id++;
-        return id;
+    private String generateId() {
+        return HTMLPanel.createUniqueId();
     }
 
     public void add(Person prn) {
         Element li = DOM.createElement("li");
-        li.setId("" + prn.getId());
+        li.setId(prn.getId());
         li.setInnerText(prn.getName());
         DOM.appendChild(ul, li);
     }
 
     public void add(String name) {
         Element li = DOM.createElement("li");
-        li.setId("" + generateId());
+        li.setId(generateId());
         li.setInnerText(name);
 
         DOM.appendChild(ul, li);
@@ -81,7 +78,6 @@ public class MyListImpl extends Composite implements MyList {
         while (ul.hasChildNodes()) {
             ul.removeChild(ul.getLastChild());
         }
-        id = 0;
     }
 
     public void replaceAll(List<Person> people) {
