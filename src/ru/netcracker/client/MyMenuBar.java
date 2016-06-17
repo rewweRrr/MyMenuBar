@@ -59,19 +59,9 @@ public class MyMenuBar implements EntryPoint {
             }
         });
 
-        list.setProvider(new ItemProvider() {
-            public void get(ItemCallBack<List<Person>> itemCallBack) {
-                itemCallBack.onSuccess(people);
-            }
-        });
-
-//        list.getProvider().get(new ItemCallBack<List<Person>>() {
-//            public void onFailure(Throwable caught) {
-//
-//            }
-//
-//            public void onSuccess(List<Person> result) {
-//                Window.alert("Suceess " + result.get(0).getId());
+//        list.setProvider(new ItemProvider() {
+//            public void get(ItemCallBack<List<Person>> itemCallBack) {
+//                itemCallBack.onSuccess(people);
 //            }
 //        });
 
@@ -83,12 +73,13 @@ public class MyMenuBar implements EntryPoint {
         //jsList.clear();
         jsList.add("Nick");
         //jsList.replaceAll(people);
-//        Window.alert(jsList.get("ui-id-3").getName());
-//        jsList.addClickHandler("ui-id-3", new EventListener() {
-//            public void onBrowserEvent(Event event) {
-//                Window.alert("Abra Kadabra");
-//            }
-//        });
-
+        jsList.add("Nick");
+        jsList.add("Nick");
+        //Window.alert(jsList.get("ui-id-4").getName());
+        jsList.addClickHandler("ui-id-4", new EventListener() {
+            public void onBrowserEvent(Event event) {
+                Window.alert("Abra Kadabra");
+            }
+        });
     }
 }

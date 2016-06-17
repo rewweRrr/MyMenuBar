@@ -7,10 +7,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import ru.netcracker.client.entity.Person;
 import ru.netcracker.client.list.MyList;
+import ru.netcracker.client.list.providers.ItemCallBack;
 import ru.netcracker.client.list.providers.ItemProvider;
 
 import java.util.List;
@@ -23,9 +25,6 @@ public class MyListImpl extends Composite implements MyList {
     }
 
     private static MyListUiBinder ourUiBinder = GWT.create(MyListUiBinder.class);
-
-
-    private ItemProvider provider;
 
     @UiField
     Element ul;
@@ -41,9 +40,13 @@ public class MyListImpl extends Composite implements MyList {
 
     public void add(Person prn) {
         Element li = DOM.createElement("li");
-        li.setId(prn.getId());
-        li.setInnerText(prn.getName());
-        DOM.appendChild(ul, li);
+        if (DOM.getElementById(prn.getId()) != null) {
+            add(prn.getName());
+        } else {
+            li.setId(prn.getId());
+            li.setInnerText(prn.getName());
+            DOM.appendChild(ul, li);
+        }
     }
 
     public void add(String name) {
@@ -64,12 +67,8 @@ public class MyListImpl extends Composite implements MyList {
         return prn;
     }
 
-    public Element getEl(String id) {
-        return DOM.getElementById(id);
-    }
-
-    public void remove(String id) {
-        Element li = DOM.getElementById(id);
+    public void remove(Person prn) {
+        Element li = DOM.getElementById(prn.getId());
         li.getParentElement().removeChild(li);
     }
 
@@ -94,11 +93,14 @@ public class MyListImpl extends Composite implements MyList {
     }
 
     public void setProvider(ItemProvider provider) {
-        this.provider = provider;
 
-    }
+        provider.get(new ItemCallBack<List<Person>>() {
+            public void onFailure(Throwable caught) {
 
-    public ItemProvider getProvider() {
-        return provider;
+            }
+            public void onSuccess(List<Person> result) {
+                Window.alert("Suceess " + result.get(0).getId());
+            }
+        });
     }
 }

@@ -18,9 +18,7 @@ public interface MyList {
 
     Person get(String id);
 
-    Element getEl(String id);
-
-    void remove(String id);
+    void remove(Person prn);
 
     void clear();
 

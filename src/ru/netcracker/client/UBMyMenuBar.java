@@ -7,10 +7,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.*;
+import ru.netcracker.client.entity.Person;
+import ru.netcracker.client.list.MyList;
 import ru.netcracker.client.list.gwt.MyListImpl;
 import ru.netcracker.client.list.js.MyListJsImpl;
 
@@ -25,12 +24,20 @@ public class UBMyMenuBar extends Composite {
 
     @UiField
     MyListImpl list;
-
     @UiField
     MyListJsImpl jsList;
-
     @UiField
     ListBox listsBox;
+    @UiField
+    TextBox idBox;
+    @UiField
+    TextBox nameBox;
+    @UiField
+    Button addBtn;
+    @UiField
+    Button clearBtn;
+
+    private MyList currentList;
 
     public MyListJsImpl getJsList() {
         return jsList;
@@ -44,19 +51,42 @@ public class UBMyMenuBar extends Composite {
         initWidget(ourUiBinder.createAndBindUi(this));
         list.getElement().setId("GWT-list");
         jsList.getElement().setId("JS-list");
+
         jsList.getElement().setAttribute("hidden", "true");
+
         listsBox.addItem("GWT-list");
         listsBox.addItem("JS-list");
+
+        setCurrentList(listsBox.getSelectedItemText());
     }
 
 
     @SuppressWarnings("UnusedParameters")
     @UiHandler("listsBox")
-    void onClickBox(ClickEvent event) {
+    public void onClickBox(ClickEvent event) {
         changeList(listsBox.getSelectedItemText());
     }
 
+    @SuppressWarnings("UnusedParameters")
+    @UiHandler("addBtn")
+    public void onClickAddBtn(ClickEvent event) {
+        if (!idBox.getText().equals("") && !nameBox.getText().equals("")) {
+            currentList.add(new Person(idBox.getText(), nameBox.getText()));
+        } else if (idBox.getText().equals("") && !nameBox.getText().equals("")) {
+            currentList.add(nameBox.getText());
+        } else {
+            Window.alert("Enter person name");
+        }
+    }
+
+    @SuppressWarnings("UnusedParameters")
+    @UiHandler("clearBtn")
+    public void onClickClearBtn(ClickEvent event) {
+        currentList.clear();
+    }
+
     private void changeList(String listId) {
+        setCurrentList(listId);
         hiddenAllLists();
         showList(listId);
     }
@@ -70,4 +100,11 @@ public class UBMyMenuBar extends Composite {
         }
     }
 
+    private void setCurrentList(String listId) {
+        if (listId.equals(list.getElement().getId())) {
+            currentList = list;
+        } else {
+            currentList = jsList;
+        }
+    }
 }
