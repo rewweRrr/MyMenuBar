@@ -81,5 +81,10 @@ public class MyMenuBar implements EntryPoint {
                 Window.alert("Abra Kadabra");
             }
         });
+        jsList.setProvider(new ItemProvider() {
+            public void get(ItemCallBack<List<Person>> itemCallBack) {
+                itemCallBack.onSuccess(people);
+            }
+        });
     }
 }

@@ -1,7 +1,7 @@
 package ru.netcracker.client.list.js;
 
-import com.google.gson.Gson;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import ru.netcracker.client.entity.Person;
 import ru.netcracker.client.list.MyList;
+import ru.netcracker.client.list.providers.ItemCallBack;
 import ru.netcracker.client.list.providers.ItemProvider;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class MyListJsImpl extends Composite implements MyList {
     }-*/;
 
     public native void clear() /*-{
-        $wnd.$(this.@MyListJsImpl::ul).myMenu("clear");
+        $wnd.$(this.@MyListJsImpl::ul).myMenu().clear();
     }-*/;
 
     public void replaceAll(List<Person> people) {
@@ -74,8 +75,41 @@ public class MyListJsImpl extends Composite implements MyList {
         });
     }-*/;
 
-    public void setProvider(ItemProvider provider) {
-        //TODO
+    public native void setProvider(ItemProvider provider) /*-{
+        var _this = this;
+        $wnd.$(this.@MyListJsImpl::ul).myMenu().setProvider({
+            get: function ($deferred) {
+                setTimeout(function () {
+                    _this.@MyListJsImpl::setProviderDeferred(*)(provider, $deferred)
+                },3000);
+            }
+        });
+    }-*/;
+
+    private void setProviderDeferred(ItemProvider provider, final JavaScriptObject deferred) {
+        provider.get(new ItemCallBack<List<Person>>() {
+            public void onSuccess(List<Person> result) {
+                deferredResolve(peopleToJsObject(result), deferred);
+            }
+
+            public native void onFailure(Throwable caught) /*-{
+
+            }-*/;
+        });
     }
+
+    private native JavaScriptObject peopleToJsObject(List<Person> people)/*-{
+        var items = new Array(people.@List::size()());
+
+        for (var i = 0; i < people.@List::size()(); i++) {
+            var person = people.@List::get(*)(i);
+            items[i] = {id: person.@Person::getId()(), name: person.@Person::getName()()};
+        }
+        return items;
+    }-*/;
+
+    private native void deferredResolve(JavaScriptObject items, JavaScriptObject deferred) /*-{
+        deferred.resolve(items);
+    }-*/;
 
 }

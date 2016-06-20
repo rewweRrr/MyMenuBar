@@ -1,11 +1,19 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:l="urn:import:ru.netcracker.client.list.gwt"
-             xmlns:jsl="urn:import:ru.netcracker.client.list.js"
-             xmlns:iw="urn:import:ru.netcracker.client.itemWidget">
+             xmlns:jsl="urn:import:ru.netcracker.client.list.js">
 
     <g:FlowPanel>
-        <g:ListBox ui:field="listsBox"/>
+        <g:HorizontalPanel>
+            <g:ListBox ui:field="listsBox"/>
+            <g:CheckBox ui:field="chooseProvider" text="Choose provider"/>
+            <g:VerticalPanel ui:field="providerPanel">
+                <g:RadioButton ui:field="radioClient" name="providerRadio" text="Client" checked="true"/>
+                <g:RadioButton ui:field="radioServer" name="providerRadio" text="Server"/>
+                <g:Button ui:field="providerButton">Add provider</g:Button>
+            </g:VerticalPanel>
+        </g:HorizontalPanel>
+
 
         <l:MyListImpl ui:field="list"/>
         <jsl:MyListJsImpl ui:field="jsList"/>
@@ -15,8 +23,9 @@
             <g:TextBox ui:field="idBox"/>
             <g:Label>Name</g:Label>
             <g:TextBox ui:field="nameBox"/>
-            <g:Button ui:field="addBtn">Add Person</g:Button>
-            <g:Button ui:field="clearBtn">Clear List</g:Button>
+            <g:Button ui:field="addButton">Add Person</g:Button>
+            <g:Button ui:field="removeButton">Remove Element</g:Button>
+            <g:Button ui:field="clearButton">Clear List</g:Button>
         </g:VerticalPanel>
     </g:FlowPanel>
 

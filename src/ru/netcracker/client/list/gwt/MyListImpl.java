@@ -7,7 +7,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import ru.netcracker.client.entity.Person;
@@ -69,7 +68,9 @@ public class MyListImpl extends Composite implements MyList {
 
     public void remove(Person prn) {
         Element li = DOM.getElementById(prn.getId());
-        li.getParentElement().removeChild(li);
+        if (li != null && li.getInnerText().equals(prn.getName())) {
+            li.getParentElement().removeChild(li);
+        }
     }
 
     public void clear() {
@@ -87,7 +88,7 @@ public class MyListImpl extends Composite implements MyList {
     }
 
     public void addClickHandler(String id, EventListener eventListener) {
-        Element li = DOM.getElementById("" + id);
+        Element li = DOM.getElementById(id);
         DOM.sinkEvents(li, Event.ONCLICK);
         DOM.setEventListener(li, eventListener);
     }
@@ -98,8 +99,12 @@ public class MyListImpl extends Composite implements MyList {
             public void onFailure(Throwable caught) {
 
             }
+
             public void onSuccess(List<Person> result) {
-                Window.alert("Suceess " + result.get(0).getId());
+                for (Person prn : result) {
+                    add(prn);
+                }
+
             }
         });
     }

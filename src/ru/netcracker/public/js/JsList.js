@@ -68,20 +68,22 @@
                 },
 
                 remove: function (item) {
-
-                    $("#" + item.id).remove();
-
+                    var $li = $("#" + item.id);
+                    if ($li.text() == item.name) {
+                        $li.remove();
+                    }
                     return this;
                 },
 
                 clear: function () {
 
-                    $($menu).html("")
+                    $($menu).html("");
                 },
 
                 replaceAll: function (items) {
 
                     $($menu).myMenu().clear();
+                    
                     for (var i = 0; i < items.length; i++) {
                         $($menu).myMenu().add(items[i]);
                     }

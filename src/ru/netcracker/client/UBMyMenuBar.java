@@ -2,6 +2,7 @@ package ru.netcracker.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -12,6 +13,11 @@ import ru.netcracker.client.entity.Person;
 import ru.netcracker.client.list.MyList;
 import ru.netcracker.client.list.gwt.MyListImpl;
 import ru.netcracker.client.list.js.MyListJsImpl;
+import ru.netcracker.client.list.providers.ItemCallBack;
+import ru.netcracker.client.list.providers.ItemProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by rewweRrr on 04.04.2016
@@ -29,13 +35,25 @@ public class UBMyMenuBar extends Composite {
     @UiField
     ListBox listsBox;
     @UiField
+    CheckBox chooseProvider;
+    @UiField
+    VerticalPanel providerPanel;
+    @UiField
+    RadioButton radioClient;
+    @UiField
+    RadioButton radioServer;
+    @UiField
+    Button providerButton;
+    @UiField
     TextBox idBox;
     @UiField
     TextBox nameBox;
     @UiField
-    Button addBtn;
+    Button addButton;
     @UiField
-    Button clearBtn;
+    Button clearButton;
+    @UiField
+    Button removeButton;
 
     private MyList currentList;
 
@@ -53,6 +71,7 @@ public class UBMyMenuBar extends Composite {
         jsList.getElement().setId("JS-list");
 
         jsList.getElement().setAttribute("hidden", "true");
+        providerPanel.getElement().setAttribute("hidden", "true");
 
         listsBox.addItem("GWT-list");
         listsBox.addItem("JS-list");
@@ -68,7 +87,7 @@ public class UBMyMenuBar extends Composite {
     }
 
     @SuppressWarnings("UnusedParameters")
-    @UiHandler("addBtn")
+    @UiHandler("addButton")
     public void onClickAddBtn(ClickEvent event) {
         if (!idBox.getText().equals("") && !nameBox.getText().equals("")) {
             currentList.add(new Person(idBox.getText(), nameBox.getText()));
@@ -80,9 +99,45 @@ public class UBMyMenuBar extends Composite {
     }
 
     @SuppressWarnings("UnusedParameters")
-    @UiHandler("clearBtn")
+    @UiHandler("clearButton")
     public void onClickClearBtn(ClickEvent event) {
         currentList.clear();
+    }
+
+    @SuppressWarnings("UnusedParameters")
+    @UiHandler("removeButton")
+    public void onClickRemoveBtn(ClickEvent event) {
+        if (!idBox.getText().equals("") && !nameBox.getText().equals("")) {
+            currentList.remove(new Person(idBox.getText(), nameBox.getText()));
+        }
+    }
+
+    @UiHandler("chooseProvider")
+    public void onValueChange(ValueChangeEvent<Boolean> event) {
+        if (event.getValue()) {
+            providerPanel.getElement().removeAttribute("hidden");
+        } else {
+            providerPanel.getElement().setAttribute("hidden", "true");
+        }
+    }
+
+    @SuppressWarnings("UnusedParameters")
+    @UiHandler("providerButton")
+    public void onClickProviderBtn(ClickEvent event) {
+        if (radioClient.getValue()) {
+            currentList.setProvider(new ItemProvider() {
+                public void get(ItemCallBack<List<Person>> itemCallBack) {
+                    List<Person> people = new ArrayList<Person>();
+                    people.add(new Person("1","qwerty"));
+                    people.add(new Person("2", "qwerty2"));
+                    itemCallBack.onSuccess(people);
+                }
+            });
+        }
+        if (radioServer.getValue()) {
+            //TODO
+            Window.alert("TODO");
+        }
     }
 
     private void changeList(String listId) {
