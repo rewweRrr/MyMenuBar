@@ -51,27 +51,23 @@
                         liElement.uniqueId();
                         liElement.html(item.name).appendTo($menu);
                     }
-                    if (item.click != null)
-                        liElement.click(item.click);
+                    if (item.handlers != null) {
+                        for (var handler in item.handlers) {
+                            liElement.on(handler, item.handlers[handler]);
+                        }
+                    }
 
-                    return this;
+                    return liElement;
                 },
 
-                get: function (index) {
-                    var children = $($menu).children();
-                    if (index <= children.length) {
-                        return $(children[index])
-                    } else {
-                        console.log("Menu size is = " + children.length)
-                    }
-                    return this;
+                get: function (id) {
+                     return $("#" + id);
                 },
 
                 remove: function (item) {
                     var $li = $("#" + item.id);
-                    if ($li.text() == item.name) {
-                        $li.remove();
-                    }
+                    $li.remove();
+
                     return this;
                 },
 
@@ -83,7 +79,7 @@
                 replaceAll: function (items) {
 
                     $($menu).myMenu().clear();
-                    
+
                     for (var i = 0; i < items.length; i++) {
                         $($menu).myMenu().add(items[i]);
                     }
@@ -130,9 +126,29 @@
 // ulElement.myMenu().remove(item2);
 // ulElement.myMenu().add(item2);
 // ulElement.myMenu("add", item3);
-// // ulElement.myMenu().get(2).click(function () {
-// //     alert("1");
-// // });
+// ulElement.myMenu().get(2).click(function () {
+//     alert("1");
+// });
+// var item12 = {
+//     id: 1,
+//     name: 'Nick12',
+//     handlers: {
+//         click: function () {
+//             alert("msg0");
+//         },
+//         //
+//         // dblclick: function () {
+//         //     alert("msg2");
+//         // }
+//         mouseenter: function () {
+//             alert("msg1");
+//         },
+//         mouseleave: function () {
+//             alert("msg2");
+//         }
+//
+//     }
+// };
 // //ulElement.myMenu("sdg", item);
 //
 // var AsyncProvider = function () {

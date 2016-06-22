@@ -1,6 +1,6 @@
 package ru.netcracker.client.list.providers;
 
-import ru.netcracker.client.entity.Person;
+import ru.netcracker.shared.Person;
 
 import java.util.List;
 

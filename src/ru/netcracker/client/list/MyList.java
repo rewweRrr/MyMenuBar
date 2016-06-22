@@ -1,9 +1,8 @@
 package ru.netcracker.client.list;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.EventListener;
-import ru.netcracker.client.entity.Person;
+import ru.netcracker.shared.Person;
 import ru.netcracker.client.list.providers.ItemProvider;
+import ru.netcracker.client.wrapprs.PersonWrapper;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public interface MyList {
 
     void add(String name);
 
-    Person get(String id);
+    PersonWrapper get(String id);
 
     void remove(Person prn);
 
@@ -24,7 +23,7 @@ public interface MyList {
 
     void replaceAll(List<Person> people);
 
-    void addClickHandler(String id, EventListener eventListener);
+//    void addClickHandler(String id, EventListener eventListener);
 
     void setProvider(ItemProvider provider);
 

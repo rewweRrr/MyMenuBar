@@ -24,7 +24,7 @@
             <g:Label>Name</g:Label>
             <g:TextBox ui:field="nameBox"/>
             <g:Button ui:field="addButton">Add Person</g:Button>
-            <g:Button ui:field="removeButton">Remove Element</g:Button>
+            <g:Button ui:field="removeButton">Remove Person</g:Button>
             <g:Button ui:field="clearButton">Clear List</g:Button>
         </g:VerticalPanel>
     </g:FlowPanel>

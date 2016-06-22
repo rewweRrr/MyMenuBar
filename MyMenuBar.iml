@@ -20,5 +20,6 @@
     <orderEntry type="library" name="org.webjars:jquery:2.1.4" level="project" />
     <orderEntry type="library" name="org.webjars:jquery-ui:1.9.2" level="project" />
     <orderEntry type="library" name="com.google.code.gson:gson:2.7" level="project" />
+    <orderEntry type="library" name="com.googlecode.gwtquery:gwtquery:1.4.3" level="project" />
   </component>
 </module>

@@ -1,4 +1,4 @@
-package ru.netcracker.client.entity;
+package ru.netcracker.shared;
 
 /**
  * Created by rewweRrr on 04.04.2016
@@ -14,6 +14,7 @@ public class Person {
     public Person(String id, String name) {
         this.id = id;
         this.name = name;
+
     }
 
     public String getId() {

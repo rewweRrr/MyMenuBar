@@ -5,14 +5,15 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import ru.netcracker.client.entity.Person;
+import ru.netcracker.shared.Person;
 import ru.netcracker.client.list.MyList;
 import ru.netcracker.client.list.providers.ItemCallBack;
 import ru.netcracker.client.list.providers.ItemProvider;
+import ru.netcracker.client.wrapprs.PersonWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,36 +28,64 @@ public class MyListJsImpl extends Composite implements MyList {
 
     @UiField
     Element ul;
+    private List<PersonWrapper> peopleJsWrapper;
 
     public MyListJsImpl() {
         initWidget(ourUiBinder.createAndBindUi(this));
         ul.setId("jsList");
+        peopleJsWrapper = new ArrayList<>();
     }
 
+    public void add(Person prn) {
+        peopleJsWrapper.add(addToJsList(prn));
+    }
 
-    public native void add(Person prn) /*-{
+    private native PersonWrapper addToJsList(Person prn) /*-{
         var $ulElement = $wnd.$(this.@MyListJsImpl::ul);
-        $ulElement.myMenu("add", {id: prn.@Person::getId()(), name: prn.@Person::getName()()});
+        var $liElement = $ulElement.myMenu("add", {id: prn.@ru.netcracker.shared.Person::getId()(), name: prn.@ru.netcracker.shared.Person::getName()()});
+
+        return @PersonWrapper::new(Ljava/lang/String;Ljava/lang/String;)($liElement.attr("id"), $liElement.text());
     }-*/;
 
-    public native void add(String name) /*-{
+
+    public void add(String name) {
+        peopleJsWrapper.add(addToJsList(name));
+    }
+
+    private native PersonWrapper addToJsList(String name) /*-{
         var $ulElement = $wnd.$(this.@MyListJsImpl::ul);
         var $liElement = $wnd.$("<li>").uniqueId();
 
         $liElement.html(name).appendTo($ulElement);
+
+        return @PersonWrapper::new(Ljava/lang/String;Ljava/lang/String;)($liElement.attr("id"), name);
     }-*/;
 
-    public native Person get(String id) /*-{
-        var $liElement = $wnd.$("#" + id);
+    public native PersonWrapper get(String id) /*-{
+        var $liElement = $wnd.$(this.@MyListJsImpl::ul).myMenu().get(id);
 
-        return @Person::new(Ljava/lang/String;Ljava/lang/String;)(id, $liElement.text());
+        return @PersonWrapper::new(Ljava/lang/String;Ljava/lang/String;)($liElement.attr("id"), $liElement.text());
     }-*/;
 
-    public native void remove(Person prn) /*-{
-        $wnd.$(this.@MyListJsImpl::ul).myMenu("remove", {id: prn.@Person::getId()(), name: prn.@Person::getName()()})
+    public void remove(Person prn) {
+        for (int i = 0; i < peopleJsWrapper.size(); i++) {
+            if (peopleJsWrapper.get(i).getPerson().getId().equals(prn.getId())) {
+                peopleJsWrapper.remove(i);
+            }
+        }
+        removeFromJsList(prn);
+    }
+
+    private native void removeFromJsList(Person prn) /*-{
+        $wnd.$(this.@MyListJsImpl::ul).myMenu("remove", {id: prn.@ru.netcracker.shared.Person::getId()(), name: prn.@ru.netcracker.shared.Person::getName()()})
     }-*/;
 
-    public native void clear() /*-{
+    public void clear(){
+        peopleJsWrapper.clear();
+        clearJsList();
+    }
+
+    private native void clearJsList() /*-{
         $wnd.$(this.@MyListJsImpl::ul).myMenu().clear();
     }-*/;
 
@@ -68,20 +97,20 @@ public class MyListJsImpl extends Composite implements MyList {
         }
     }
 
-    public native void addClickHandler(String id, EventListener eventListener) /*-{
-        var $liElement = $wnd.$("#" + id);
-        $liElement.click(function () {
-            eventListener.@EventListener::onBrowserEvent(*)();
-        });
-    }-*/;
+//    public native void addClickHandler(String id, EventListener eventListener) /*-{
+//        var $liElement = $wnd.$("#" + id);
+//        $liElement.click(function () {
+//            eventListener.@EventListener::onBrowserEvent(*)();
+//        });
+//    }-*/;
 
     public native void setProvider(ItemProvider provider) /*-{
         var _this = this;
         $wnd.$(this.@MyListJsImpl::ul).myMenu().setProvider({
             get: function ($deferred) {
-                setTimeout(function () {
-                    _this.@MyListJsImpl::setProviderDeferred(*)(provider, $deferred)
-                },3000);
+                //setTimeout(function () {
+                _this.@MyListJsImpl::setProviderDeferred(*)(provider, $deferred)
+                //},3000);
             }
         });
     }-*/;
@@ -103,7 +132,7 @@ public class MyListJsImpl extends Composite implements MyList {
 
         for (var i = 0; i < people.@List::size()(); i++) {
             var person = people.@List::get(*)(i);
-            items[i] = {id: person.@Person::getId()(), name: person.@Person::getName()()};
+            items[i] = {id: person.@ru.netcracker.shared.Person::getId()(), name: person.@ru.netcracker.shared.Person::getName()()};
         }
         return items;
     }-*/;

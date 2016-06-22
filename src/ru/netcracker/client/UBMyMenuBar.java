@@ -7,9 +7,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
-import ru.netcracker.client.entity.Person;
+import ru.netcracker.shared.Person;
 import ru.netcracker.client.list.MyList;
 import ru.netcracker.client.list.gwt.MyListImpl;
 import ru.netcracker.client.list.js.MyListJsImpl;
@@ -107,7 +108,7 @@ public class UBMyMenuBar extends Composite {
     @SuppressWarnings("UnusedParameters")
     @UiHandler("removeButton")
     public void onClickRemoveBtn(ClickEvent event) {
-        if (!idBox.getText().equals("") && !nameBox.getText().equals("")) {
+        if (!idBox.getText().equals("")) {
             currentList.remove(new Person(idBox.getText(), nameBox.getText()));
         }
     }
@@ -126,11 +127,20 @@ public class UBMyMenuBar extends Composite {
     public void onClickProviderBtn(ClickEvent event) {
         if (radioClient.getValue()) {
             currentList.setProvider(new ItemProvider() {
-                public void get(ItemCallBack<List<Person>> itemCallBack) {
-                    List<Person> people = new ArrayList<Person>();
-                    people.add(new Person("1","qwerty"));
+
+                public void get(final ItemCallBack<List<Person>> itemCallBack) {
+                    final List<Person> people = new ArrayList<>();
+                    people.add(new Person("1", "qwerty"));
                     people.add(new Person("2", "qwerty2"));
-                    itemCallBack.onSuccess(people);
+
+                    Timer t = new Timer() {
+                        public void run() {
+                            itemCallBack.onSuccess(people);
+                        }
+                    };
+
+                    t.schedule(1500);
+                    //itemCallBack.onSuccess(people);
                 }
             });
         }
@@ -145,6 +155,7 @@ public class UBMyMenuBar extends Composite {
         hiddenAllLists();
         showList(listId);
     }
+
     private void showList(String listId) {
         DOM.getElementById(listId).removeAttribute("hidden");
     }

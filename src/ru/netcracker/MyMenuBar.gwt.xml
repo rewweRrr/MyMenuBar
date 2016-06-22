@@ -3,7 +3,9 @@
 <module>
 
     <inherits name='com.google.gwt.user.User'/>
+    <inherits name="com.google.gwt.query.Query"/>
 
     <entry-point class='ru.netcracker.client.MyMenuBar'/>
-
+    <source path="client"/>
+    <source path="shared"/>
 </module>
